@@ -86,3 +86,14 @@ CREATE TABLE IF NOT EXISTS shareholding (
 
     UNIQUE(company_id, period)
 );
+
+CREATE TABLE IF NOT EXISTS securities (
+    id BIGSERIAL PRIMARY KEY,
+    company_id BIGINT NOT NULL REFERENCES companies(id),
+    exchange TEXT NOT NULL,
+    instrument_key TEXT NOT NULL UNIQUE,
+    symbol TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE(company_id, exchange)
+);
