@@ -1,5 +1,6 @@
 from datetime import date
 
+from app.ingestion import prices
 from app.ingestion.prices import (
     get_last_price_date,
     get_security,
@@ -53,5 +54,8 @@ def ingest_prices(symbol: str):
     print(
         f"Loaded {len(prices)} records for {symbol}."
     )
+
+    return len(prices)
+
 if __name__ == "__main__":
     ingest_prices("RELIANCE")

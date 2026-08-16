@@ -27,6 +27,26 @@ def get_security(symbol: str):
 
     return row
 
+def get_all_securities():
+    query = text("""
+        SELECT
+            c.id AS company_id,
+            c.symbol,
+            c.company_name,
+            c.isin,
+            s.exchange,
+            s.instrument_key
+        FROM companies c
+        JOIN securities s
+            ON s.company_id = c.id
+        WHERE s.exchange = 'NSE'
+        ORDER BY c.symbol;
+    """)
+
+    with engine.connect() as connection:
+        result = connection.execute(query)
+
+        return result.fetchall()
 
 def get_last_price_date(company_id: int):
     query = text("""
