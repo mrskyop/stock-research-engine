@@ -1,7 +1,7 @@
 from sqlalchemy import text
 
 from app.database import engine
-
+# creating function to save income statements, balance sheets, cash flows, and shareholding data into the database with conflict resolution. Each function takes a list of dictionaries representing rows of data and executes an SQL INSERT statement with an ON CONFLICT clause to update existing records if they already exist. The functions return the number of rows processed.
 
 def save_income_statements(rows: list[dict]):
     query = text("""
