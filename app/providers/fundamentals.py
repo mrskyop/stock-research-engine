@@ -117,3 +117,21 @@ def get_shareholding(isin: str):
     response.raise_for_status()
 
     return response.json()
+
+def get_key_ratios(isin: str):
+    url = f"https://api.upstox.com/v2/fundamentals/{isin}/key-ratios"
+
+    headers = {
+        "Accept": "application/json",
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+    }
+
+    response = requests.get(
+        url,
+        headers=headers,
+        timeout=30,
+    )
+
+    response.raise_for_status()
+
+    return response.json()

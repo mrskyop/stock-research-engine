@@ -1,0 +1,33 @@
+from datetime import date
+
+from app.ingestion.financial_load import save_key_ratios
+from app.ingestion.ratio_transform import (
+    transform_key_ratios,
+)
+from app.ingestion.ratio_validation import (
+    validate_key_ratio,
+)
+from app.providers.fundamentals import get_key_ratios
+
+
+def main():
+    response = get_key_ratios(
+        isin="INE002A01018"
+    )
+
+    rows = transform_key_ratios(
+        company_id=1,
+        api_response=response,
+        as_of_date=date.today(),
+    )
+
+    for row in rows:
+        validate_key_ratio(row)
+
+    loaded = save_key_ratios(rows)
+
+    print(f"Loaded {loaded} key-ratio rows.")
+
+
+if __name__ == "__main__":
+    main()

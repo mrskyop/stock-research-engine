@@ -213,3 +213,35 @@ def save_shareholding(rows: list[dict]):
         connection.execute(query, rows)
 
     return len(rows)
+
+def save_key_ratios(rows: list[dict]):
+    query = text("""
+        INSERT INTO key_ratios (
+            company_id,
+            as_of_date,
+            ratio_name,
+            company_value,
+            sector_value
+        )
+        VALUES (
+            :company_id,
+            :as_of_date,
+            :ratio_name,
+            :company_value,
+            :sector_value
+        )
+        ON CONFLICT (
+            company_id,
+            as_of_date,
+            ratio_name
+        )
+        DO UPDATE SET
+            company_value = EXCLUDED.company_value,
+            sector_value = EXCLUDED.sector_value,
+            updated_at = CURRENT_TIMESTAMP;
+    """)
+
+    with engine.begin() as connection:
+        connection.execute(query, rows)
+
+    return len(rows)
